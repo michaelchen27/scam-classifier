@@ -4,10 +4,10 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
-class GRUCell(nn.Module):
+class GRU_Cell(nn.Module):
 
     def __init__(self, input_size, hidden_size, bias=True):
-        super(GRUCell, self).__init__()
+        super(GRU_Cell, self).__init__()
         self.input_size = input_size
         self.hidden_size = hidden_size
         self.bias = bias
@@ -63,7 +63,7 @@ class GRU(nn.Module):
         # Embedding layer
         self.embedding = nn.Embedding(vocab_size, embedding_dim)
         # GRU Cell
-        self.gru_cell = GRUCell(embedding_dim, hidden_dim)
+        self.gru_cell = GRU_Cell(embedding_dim, hidden_dim)
         # Fully-connected layer
         self.fc = nn.Linear(hidden_dim, output_size)
         # Sigmoid layer
