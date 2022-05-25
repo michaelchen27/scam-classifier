@@ -29,17 +29,24 @@ class GRU_Cell(nn.Module):
     def init_parameters(self):
         std = 1.0 / np.sqrt(self.hidden_size)
         for w in self.parameters():
+            # w.requires_grad = True # for gradient computation
             w.data.uniform_(-std, std)
 
     def forward(self, x, h):
 
         x = x.view(-1, x.shape[1])
 
+        self.fc_ir.requires_grad_(True)
         i_r = self.fc_ir(x)
+        self.fc_hr.requires_grad_(True)
         h_r = self.fc_hr(h)
+        self.fc_iz.requires_grad_(True)
         i_z = self.fc_iz(x)
+        self.fc_hz.requires_grad_(True)
         h_z = self.fc_hz(h)
+        self.fc_in.requires_grad_(True)
         i_n = self.fc_in(x)
+        self.fc_hn.requires_grad_(True)
         h_n = self.fc_hn(h)
 
         resetgate = F.sigmoid(i_r + h_r)
@@ -62,6 +69,8 @@ class GRU(nn.Module):
         self.dropout = nn.Dropout(p=dropout)
         # Embedding layer
         self.embedding = nn.Embedding(vocab_size, embedding_dim)
+        for param in self.embedding.parameters():
+            param.requires_grad = True
         # GRU Cell
         self.gru_cell = GRU_Cell(embedding_dim, hidden_dim)
         # Fully-connected layer
