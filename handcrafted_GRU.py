@@ -1,6 +1,5 @@
 import numpy as np
 
-import torch
 from torch import nn
 import torch.nn.functional as F
 
@@ -36,17 +35,11 @@ class GRU_Cell(nn.Module):
 
         x = x.view(-1, x.shape[1])
 
-        self.fc_ir.requires_grad_(True)
         i_r = self.fc_ir(x)
-        self.fc_hr.requires_grad_(True)
         h_r = self.fc_hr(h)
-        self.fc_iz.requires_grad_(True)
         i_z = self.fc_iz(x)
-        self.fc_hz.requires_grad_(True)
         h_z = self.fc_hz(h)
-        self.fc_in.requires_grad_(True)
         i_n = self.fc_in(x)
-        self.fc_hn.requires_grad_(True)
         h_n = self.fc_hn(h)
 
         resetgate = F.sigmoid(i_r + h_r)
